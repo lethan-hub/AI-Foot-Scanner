@@ -1,0 +1,13 @@
+# Installed opencv-python, which allows the system to find the measurements, flattens and finds edges
+# Installed numpy, which is a powerful math library, which allows the calculation for the pixels to mm and overall math
+
+# OpenCV uses BGR, others use RGB
+
+
+# Debugged today
+    # When writing the code, instead of using 1 chanel, which grayscale uses, I used 3 channels, which BGR uses
+    # Did a few tests today trying to find the medium where the Gassuian Blur can distinguish the important lines and not important lines
+
+
+# How to run
+# python3 main.py
