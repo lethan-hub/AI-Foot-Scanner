@@ -30,10 +30,14 @@ def process_edges(color_image):
 
 
     # Variable called blurred that equals cv2.GaussianBlur, which blurs the uncessasary details like the floor background or textures
-    blurred = cv2.GaussianBlur(gray,(5,5),0)
+    
+    # Adjust the blur from (5,5) to (9,9) to ensure that the wood grains are blended in
+    blurred = cv2.GaussianBlur(gray,(9,9),0)
 
     # Variable called edges that uses .Canny, which allows the edges by determing the major brightness difference
-    edges = cv2.Canny(blurred,100,250)
+
+    # Lowering the .Canny measurements to make sure that the foot is still in tact
+    edges = cv2.Canny(blurred,80,180)
 
     return edges
 
