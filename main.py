@@ -41,6 +41,17 @@ def process_edges(color_image):
 
     return edges
 
+def close_gaps_in_edges(edge_image):
+    # Variable that is called kernal that uses the np(which is the numpy import)
+    # This creates a 3x3 matrix to act like a brush
+    
+    kernel = np.ones((3,3),np.uint8)
+
+    # This brush blurs the unessential things and connects the lines of the essential parts of the image
+    closed_edges = cv2.morphologyEx(edge_image,cv2.MORPH_CLOSE,kernel)
+
+    return closed_edges
+
 
 # Main Function
 
