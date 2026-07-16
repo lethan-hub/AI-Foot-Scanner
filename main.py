@@ -112,6 +112,19 @@ if __name__ == "__main__":
         cv2.imshow("Detected Edges: ",detected_edges)
 
 
+        # Variable that holds the return value for of find_paper_corners function. The detected_edges is the completed black and white photo
+        paper_coordinates = find_paper_corners(detected_edges)
+
+
+    # Checks if paper_coordinates is not None to then run and give the paper_coordinates
+    # Only proceeds if there is a 4 cornered shape
+        if paper_coordinates is not None:
+            print("Paper Corner Coordinates: \n", paper_coordinates)
+
+
+
+        # .imshow shows the detected images that got repaired from the 3x3 brush
+        cv2.imshow("Healed Edges: ",detected_edges)
         # Keep open until until told so
         cv2.waitKey(0)
         cv2.destroyAllWindows()
