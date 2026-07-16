@@ -39,18 +39,56 @@ def process_edges(color_image):
     # Lowering the .Canny measurements to make sure that the foot is still in tact
     edges = cv2.Canny(blurred,80,180)
 
-    return edges
-
-def close_gaps_in_edges(edge_image):
-    # Variable that is called kernal that uses the np(which is the numpy import)
-    # This creates a 3x3 matrix to act like a brush
     
+    # This creates a small 3x3 digital brush that can be used to connect the gaps
     kernel = np.ones((3,3),np.uint8)
 
     # This brush blurs the unessential things and connects the lines of the essential parts of the image
-    closed_edges = cv2.morphologyEx(edge_image,cv2.MORPH_CLOSE,kernel)
+    closed_edges = cv2.morphologyEx(edges,cv2.MORPH_CLOSE,kernel)
 
     return closed_edges
+
+#def close_gaps_in_edges(edge_image):
+    # Variable that is called kernal that uses the np(which is the numpy import)
+    # This creates a 3x3 matrix to act like a brush
+    ##
+
+
+
+
+def find_paper_corners(edge_image):
+    # contours is the variable that is going to hold a list of all the mathematicals from inside the variable
+        # It will provide them in x,y coordinates
+        # With the use of "findContours", it provides us the contours and the hierachy, so we implement the _ to tell the code to only use the contours and leave out the hierachy
+        # .findContours is from cv2 that analyzes the black and white image and traces the white
+        # .RETR_EXTERNAL provide strict instructions to only trace the outer most boundary of the paper while forgetting what would be inside the paper
+        # .CHAIN_APPROX_SIMPLE provides mememory and processing optimization meaning that if a shape had 1000 pixels, it would only grab the essential ones such as the endpoints to reduce the storage
+    contours, _ = cv2.findContours(edge_image,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+
+
+
+# Iteration for the list of contours
+    for contour in contours:
+        # This variable holds the value of the perimeter
+        # .arcLength finds the perimeter of the shape
+        # contour is the shape itself being analyzed
+        # True tells the code that is a continous shape that is connected without any breaks
+        perimeter = cv2.arcLength(contour,True)
+
+        # .approxPolyDP optimizes the pixels by throwing away the unecessary lines by only getting the end points
+        # contour is the shape
+        # 0.02 * perimeter is the brains of the code, this allows the code to be adaptable by using 2% of the shape's total size. Basically no matter the distant from where the picture is taken, the math will automatically adapt to the size of object in the image
+        # True provides the same as before, it ensures that it is a closed loop meaning that it will connect perfectly
+        approx_shape = cv2.approxPolyDP(contour,0.02 * perimeter,True)
+
+
+        
+    # Check statement that verifies if shape has 4 corners
+        if len(approx_shape) == 4:
+            print(f"[Found] Paper detected with 4 coordinates!")
+            return approx_shape
+    print(f"[Error] Could not find 4-cornered shape for calibration")
+    return None
 
 
 # Main Function
