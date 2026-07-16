@@ -41,7 +41,7 @@ def process_edges(color_image):
 
     
     # This creates a small 3x3 digital brush that can be used to connect the gaps
-    kernel = np.ones((3,3),np.uint8)
+    kernel = np.ones((5,5),np.uint8)
 
     # This brush blurs the unessential things and connects the lines of the essential parts of the image
     closed_edges = cv2.morphologyEx(edges,cv2.MORPH_CLOSE,kernel)
