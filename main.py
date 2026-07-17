@@ -65,10 +65,21 @@ def find_paper_corners(edge_image):
         # .CHAIN_APPROX_SIMPLE provides mememory and processing optimization meaning that if a shape had 1000 pixels, it would only grab the essential ones such as the endpoints to reduce the storage
     contours, _ = cv2.findContours(edge_image,cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 
+    # Sorted() sorts the list from smallest to largest
+    # With the (reverse=True) flips it so it goes from largest to smallest
+    # Contours is a list of all of the continous line outputs such as the foot, paper, and all the lines
+    # Instead of sorting by alphabetically or numerically, it takes the value of the surface area 
+    sorted_contours = sorted(contours,key=cv2.contourArea,reverse=True)
+
 
 
 # Iteration for the list of contours
     for contour in contours:
+
+
+        # This skips the smaller small shapes and only gets the bigger ones
+        if cv2.contourArea(contour) < 5000:
+            continue
         # This variable holds the value of the perimeter
         # .arcLength finds the perimeter of the shape
         # contour is the shape itself being analyzed
